@@ -13,7 +13,7 @@ impl Version {
     fn parse(s: String) -> Version {
         let lower = s.to_lowercase();
         let mut parts = Vec::new();
-        for part in lower.split(|c| c == '=' || c == '.' || c == '_') {
+        for part in lower.split(|c| c == '-' || c == '.' || c == '_') {
             let (qual, num) = Version::parse_part(part.to_string());
             parts.push(qual);
             parts.push(num);
