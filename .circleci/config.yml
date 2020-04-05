@@ -9,8 +9,16 @@ jobs:
       - checkout
       - run:
           command: cargo build
+  test:
+    docker:
+      - image: rust:1.42
+    steps:
+      - checkout
+      - run:
+          command: cargo test
 
 workflows:
   build-and-test:
     jobs:
       - build
+      - test

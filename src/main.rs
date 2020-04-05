@@ -4,6 +4,7 @@ use std::fs::File;
 use std::fmt::{Display, Error, Formatter};
 use std::io::{self, BufRead};
 
+#[derive(Debug)]
 struct Version {
     s: String,
     parts: Vec<VersionPart>,
@@ -66,7 +67,7 @@ impl Version {
     }
 }
 
-#[derive(PartialEq, Eq, PartialOrd, Ord)]
+#[derive(PartialEq, Eq, PartialOrd, Ord, Debug)]
 struct VersionPart {
     n: i64,
     q: String,
@@ -163,5 +164,24 @@ fn main() {
     versions.sort_unstable();
     for v in versions {
         println!("{}", v);
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn compare_simple_versions() {
+        let a = Version::parse("1");
+        let b = Version::parse("2");
+        assert!(a < b);
+    }
+
+    #[test]
+    fn equality_ignores_separators() {
+        let a = Version::parse("1.2");
+        let b = Version::parse("1-2");
+        assert_eq!(a, b);
     }
 }
