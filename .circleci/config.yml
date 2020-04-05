@@ -1,0 +1,16 @@
+# See: https://circleci.com/docs/2.0/configuration-reference
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: rust:1.42
+    steps:
+      - checkout
+      - run:
+          command: cargo build
+
+workflows:
+  build-and-test:
+    jobs:
+      - build
