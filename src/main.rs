@@ -10,7 +10,8 @@ struct Version {
 }
 
 impl Version {
-    fn parse(s: String) -> Version {
+    fn parse<S: Into<String>>(s: S) -> Version {
+        let s = s.into();
         let lower = s.to_lowercase();
         let mut parts = Vec::new();
         for part in lower.split(|c| c == '-' || c == '.' || c == '_') {
@@ -52,7 +53,7 @@ impl Version {
                 let (q, n) = part.split_at(idx);
                 let q = match q {
                     "" => VersionPart::default(),
-                    _ => VersionPart::new_qualifier(q.to_owned())
+                    _ => VersionPart::new_qualifier(q)
                 };
                 let n = match n {
                     "" => VersionPart::default(),
@@ -83,7 +84,8 @@ impl VersionPart {
         VersionPart { n, q: "".to_owned() }
     }
 
-    fn new_qualifier(q: String) -> VersionPart {
+    fn new_qualifier<S: Into<String>>(q: S) -> VersionPart {
+        let q = q.into();
         let n = match q.as_str() {
             "snapshot" => -5,
             "alpha" => -4,
